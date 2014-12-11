@@ -21,8 +21,7 @@ SDL_Renderer* Game::GetRenderer()
 	return MainRenderer;
 }
 
-
-bool Game::Init(std::string WindowName, int Window_Width, int Window_Height, int PosX, int PosY, Uint32 Window_Flag)
+bool Game::InitSDL()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -31,7 +30,7 @@ bool Game::Init(std::string WindowName, int Window_Width, int Window_Height, int
 	}
 	else
 	{
-		MainWindow = SDL_CreateWindow(WindowName.c_str(), PosX, PosY, Window_Width, Window_Height, Window_Flag);
+		MainWindow = SDL_CreateWindow(Local_WindowName.c_str(), Local_PosX, Local_PosY, Local_WindowWidth, Local_WindowHeight, Local_WindowFlag);
 		if (MainWindow == NULL)
 		{
 			std::cerr << "Could not Create MainWindow, because of SDL_Error: \n" << SDL_GetError() << std::endl;
@@ -50,26 +49,60 @@ bool Game::Init(std::string WindowName, int Window_Width, int Window_Height, int
 				LoadTexture::Instance()->InitRenderer(MainRenderer);
 				LoadFont::Instance()->InitRenderer(MainRenderer);
 				MainText.SetFont("TTF/Font.ttf", 16);
-				Push_All_Textures();
-				for (int a = 0; a <= 3; a++)
-					Trafic[a] = new RoadTrafic;
 			}
 		}
 	}
 	return Success;
 }
 
-
-void Game::Push_All_Textures()
+bool Game::InitTextures()
 {
-	MainCar.Push_Texture("Img/CarSprites.png", "CarSprites");
-	MainMap.Push_Texture("Img/road.png", "Map"); 
-	MainTrafic.Push_Texture("Img/111.png", "Zero_Car");
-	MainTrafic.Push_Texture("Img/1.png", "First_Car");
-	MainTrafic.Push_Texture("Img/2.png", "Second_Car");
-	MainTrafic.Push_Texture("Img/3.png", "Third_Car");
-	MainTrafic.Push_Texture("Img/4.png", "Fourth_Car");
-	MainTrafic.Push_Texture("Img/5.png", "Fifth_Car");
+	//Check for errors, if no Errors return true, if there is an error return false!
+	bool Check_For_Errors[8];
+	Check_For_Errors[0] = MainCar.Push_Texture("Img/CarSprites.png", "CarSprites");
+	Check_For_Errors[1] = MainMap.Push_Texture("Img/road.png", "Map");
+	Check_For_Errors[2] = MainTrafic.Push_Texture("Img/0.png", "Zero_Car");
+	Check_For_Errors[3] = MainTrafic.Push_Texture("Img/1.png", "First_Car");
+	Check_For_Errors[4] = MainTrafic.Push_Texture("Img/2.png", "Second_Car");
+	Check_For_Errors[5] = MainTrafic.Push_Texture("Img/3.png", "Third_Car");
+	Check_For_Errors[6] = MainTrafic.Push_Texture("Img/4.png", "Fourth_Car");
+	Check_For_Errors[7] = MainTrafic.Push_Texture("Img/5.png", "Fifth_Car");
+	for (int Check = 0; Check < 8; Check++)
+	{
+		if (Check_For_Errors[Check] == false)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Game::Init(std::string WindowName, int Window_Width, int Window_Height, int PosX, int PosY, Uint32 Window_Flag)
+{
+	Local_WindowName = WindowName;
+	Local_WindowWidth = Window_Width;
+	Local_WindowHeight = Window_Height;
+	Local_PosX = PosX;
+	Local_PosY = PosY;
+	Local_WindowFlag = Window_Flag;
+
+
+	if (!InitSDL())
+	{
+		std::cerr << "Error in InitSDL function" << std::endl;
+		Success = false;
+	}
+	if (!InitTextures())
+	{
+		std::cerr << "Error in InitTextures function" << std::endl;
+		Success = false;
+	}
+
+
+	for (int a = 0; a <= 3; a++)
+		Trafic[a] = new RoadTrafic;
+
+	return Success;
 }
 
 void Game::Event_Handler(SDL_Event* EventType)
@@ -77,7 +110,6 @@ void Game::Event_Handler(SDL_Event* EventType)
 	MainCar.HandleEvents(EventType);
 	MainMap.HandleEvents(EventType);
 }
-
 
 bool Game::Update()
 {
@@ -100,12 +132,17 @@ bool Game::Render()
 	MainText.Render_Text("FPS", 0, 0);
 	for (int a = 0; a <= 3; a++)
 	{
-		Temp[a] = Trafic[a]->Render_Car("Zero_Car", a, MainMap.GetRoadSpeed(), 0,MainCar.Car_YPos());
+		Temp[a] = Trafic[a]->Render_Car("Zero_Car", a, MainMap.GetRoadSpeed(), 0,MainCar.Get_YPos());
 		MainCar.Render("CarSprites");
 		
 	}
 
 	return true; // TEMP
+}
+
+void Game::Calculate_Fps(int Fps)
+{
+	MainTime.Push_Fps(Fps);
 }
 
 void Game::Quit()
@@ -118,9 +155,8 @@ void Game::Quit()
 	exit(0);
 }
 
-void Game::Push_Fps(int Fps)
-{
-	MainTime.Push_Fps(Fps);
-}
+
+
+
 
 

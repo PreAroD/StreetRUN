@@ -39,9 +39,9 @@ int RoadTrafic::Generate_Random_Number(int Low_Num,int High_Num)
 
 }
 
-void RoadTrafic::Push_Texture(std::string Path,std::string Index)
+bool RoadTrafic::Push_Texture(std::string Path,std::string Index)
 {
-	LoadTexture::Instance()->PushTexture(Path, Index);
+	return LoadTexture::Instance()->PushTexture(Path, Index);
 }
 
 

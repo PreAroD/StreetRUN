@@ -9,6 +9,7 @@ private:
 	std::map<std::string, SDL_Surface*> Surface_Container;
 	//Functions Font
 	void Free_LoadFont();
+	void FontInit();
 	
 	bool CreateSurfaceText(std::string, SDL_Color, std::string);//Create Surface Text 3
 	bool CreateTextureText(std::string); //Create Texture
@@ -23,7 +24,6 @@ public:
 	LoadFont();
 	~LoadFont();
 
-		void FontInit(); //Init 1
 		bool PushText(std::string Text, SDL_Color Text_Color, std::string Index);
 		bool SetFont(std::string, int);
 		SDL_Texture* GetText(std::string); //Main Function

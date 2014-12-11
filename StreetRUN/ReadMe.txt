@@ -38,3 +38,5 @@ AppWizard uses "TODO:" comments to indicate parts of the source code you
 should add to or customize.
 
 /////////////////////////////////////////////////////////////////////////////
+
+This is a "StreetRUN" game that i do "Just for Fun", this project uses Visual Studio 2013 and SDL ver 2.0.3

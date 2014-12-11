@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 		TheGame.Render();
 		SDL_RenderPresent(TheGame.GetRenderer());
 		Fps++;
-		TheGame.Push_Fps(Fps);
+		TheGame.Calculate_Fps(Fps);
 	}
 	TheGame.Quit();
 

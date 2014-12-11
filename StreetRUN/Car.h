@@ -22,13 +22,16 @@ public:
 	~Car();
 	
 	SDL_Renderer* GetRender();
-	
-	void Push_Texture(std::string, std::string);
-	SDL_Texture* GetCar(std::string);
+
+	int Get_XPos();
+	int Get_YPos();
+
+
+	bool Push_Texture(std::string, std::string);
+	SDL_Texture* Get_Texture(std::string);
 	void Render(std::string, int=0, int=0);
 	void HandleEvents(SDL_Event* event);
 	bool Collision_Detect(SDL_Rect);
 	void Move(SDL_Rect*);
-	int Car_YPos();
 };
 

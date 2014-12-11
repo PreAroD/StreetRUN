@@ -16,13 +16,13 @@ Car::~Car()
 {
 }
 
-void Car::Push_Texture(std::string Path, std::string Index)
+bool Car::Push_Texture(std::string Path, std::string Index)
 {
-	LoadTexture::Instance()->PushTexture(Path, Index);
+	return LoadTexture::Instance()->PushTexture(Path, Index);
 }
 
 
-SDL_Texture* Car::GetCar(std::string Index)
+SDL_Texture* Car::Get_Texture(std::string Index)
 {
 	return LoadTexture::Instance()->GetTexture(Index);
 }
@@ -122,7 +122,7 @@ void Car::HandleEvents(SDL_Event* LocalEvent)
 		case SDLK_UP:
 			YVelocity += MOVE_SPEED;
 			ChoosenIndex = SpriteIndex[0];
-			//Fix MOVE BUG
+			//Fixes MOVE BUG
 			KeyBoardState = SDL_GetKeyboardState(NULL);
 			if (KeyBoardState[SDL_SCANCODE_LEFT] == 1)
 				ChoosenIndex = SpriteIndex[1];
@@ -135,7 +135,7 @@ void Car::HandleEvents(SDL_Event* LocalEvent)
 		case SDLK_DOWN:
 			YVelocity -= MOVE_SPEED;
 			ChoosenIndex = SpriteIndex[0];
-			//Fix MOVE BUG
+			//Fixes MOVE BUG
 			KeyBoardState = SDL_GetKeyboardState(NULL);
 			if (KeyBoardState[SDL_SCANCODE_LEFT] == 1)
 				ChoosenIndex = SpriteIndex[1];
@@ -149,7 +149,7 @@ void Car::HandleEvents(SDL_Event* LocalEvent)
 		case SDLK_LEFT:
 			XVelocity += MOVE_SPEED;
 			ChoosenIndex = SpriteIndex[0];
-			//Fix MOVE BUG
+			//Fixes MOVE BUG
 			KeyBoardState = SDL_GetKeyboardState(NULL);
 			if (KeyBoardState[SDL_SCANCODE_UP] == 1)
 				ChoosenIndex = SpriteIndex[0];
@@ -163,7 +163,7 @@ void Car::HandleEvents(SDL_Event* LocalEvent)
 		case SDLK_RIGHT:
 			XVelocity -= MOVE_SPEED;
 			ChoosenIndex = SpriteIndex[0];
-			//Fix MOVE BUG
+			//Fixes MOVE BUG
 			KeyBoardState = SDL_GetKeyboardState(NULL);
 			if (KeyBoardState[SDL_SCANCODE_LEFT] == 1)
 				ChoosenIndex = SpriteIndex[1];
@@ -215,7 +215,6 @@ void Car::Move(SDL_Rect* Collision)
 
 bool Car::Collision_Detect(SDL_Rect Collision)
 {
-	//Know why its working
 	if (XPos + 150 <= Collision.x)
 		return false;
 	if (XPos >= Collision.x + LoadTexture::Instance()->GetImageWidth("Zero_Car"))
@@ -228,7 +227,13 @@ bool Car::Collision_Detect(SDL_Rect Collision)
 	return true;
 }
 
-int Car::Car_YPos()
+
+int Car::Get_XPos()
+{
+	return XPos;
+}
+
+int Car::Get_YPos()
 {
 	return YPos;
 }

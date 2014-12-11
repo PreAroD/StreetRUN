@@ -11,9 +11,9 @@ Map::~Map()
 {
 }
 
-void Map::Push_Texture(std::string Path, std::string Index)
+bool Map::Push_Texture(std::string Path, std::string Index)
 {
-	LoadTexture::Instance()->PushTexture(Path, Index);
+    return LoadTexture::Instance()->PushTexture(Path, Index);
 }
 
 

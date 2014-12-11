@@ -16,7 +16,7 @@ public:
 	RoadTrafic();
 	~RoadTrafic();
 	int Generate_Random_Number(int,int);
-	void Push_Texture(std::string,std::string);
+	bool Push_Texture(std::string,std::string);
 	SDL_Texture* Get_Texture(std::string);
 	void Get_Renderer();
 	SDL_Rect Render_Car(std::string,int,int,int,int);
