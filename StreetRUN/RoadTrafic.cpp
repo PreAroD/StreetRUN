@@ -67,7 +67,10 @@ SDL_Rect RoadTrafic::Render_Car(std::string Texture_Index,int Position,int Speed
 		//}
 		//else
 		//{
-			Car_Position_On_Road[Position].y += Generate_Random_Number(5,10 );
+	//TODO: fix this!!!!!!!!
+	int test = Generate_Random_Number(1, 14);
+	cout << "test = " << test << endl;
+	Car_Position_On_Road[Position].y += test;
 		//}
 	//}
 
