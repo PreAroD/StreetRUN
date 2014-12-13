@@ -78,7 +78,7 @@ int Timer::Get_Time_In_Seconds()
 
 std::string Timer::Get_FPS()
 {
-	float avgFPS = countedFrames / (Get_Ticks() / 1000.f);
+	int avgFPS = countedFrames / (Get_Ticks() / 1000.f);
 
 	if (avgFPS > 2000000) { avgFPS = 0; }
 	Stream.str("");

@@ -7,7 +7,7 @@ RoadTrafic::RoadTrafic()
 	FirstCars[0] = true;
 	FirstCars[1] = true;
 	Loop = 0;
-	Car_Position_On_Road[0] = { 50, -400, 150, 300 };
+	Car_Position_On_Road[0] = { 50, -700, 150, 300 };
 	Car_Position_On_Road[1] = { 300, -400, 150, 300 };
 	Car_Position_On_Road[2] = { 550, -900, 150, 300 };
 	Car_Position_On_Road[3] = { 800, -2000, 150, 300 };

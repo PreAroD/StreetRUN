@@ -128,7 +128,10 @@ bool Game::Update()
 	MainText.SetText(MainMap.GetRoadSpeed_For_Text(), "Speed", Text_Color);	
 	MainText.SetText(MainTime.Get_FPS(), "FPS", Text_Color);
 	for (int a = 0; a < 4;a++)
-	MainCar.Move(Temp);
+		if (MainMap.GetRoadSpeed() != 0)
+		{
+			MainCar.Move(Temp);
+		}
 	return true; //TEMP
 }
 
@@ -139,16 +142,20 @@ bool Game::Render()
 	//Render the car
 	
 	MainText.Render_Text("Speed", 30, 880); 
-	MainText.Render_Text("FPS", 0, 0);
-	for (int a = 0; a <= 3; a++)
+	MainText.Render_Text("FPS", 450, 0);
+	
+	if (MainMap.GetRoadSpeed() != 0)
 	{
-		//Temp[a] for collision
-		int Generated_Number = MainTrafic.Generate_Random_Number(0, 5);
-		Temp[a] = Trafic[a]->Render_Car(CarType[Generated_Number],Generated_Number, a, MainMap.GetRoadSpeed(),MainCar.Get_YPos());
-		MainCar.Render("CarSprites");
-		
-	}
+		for (int a = 0; a <= 3; a++)
+		{
+			//Temp[a] for collision
+			int Generated_Number = MainTrafic.Generate_Random_Number(0, 5);
+			Temp[a] = Trafic[a]->Render_Car(CarType[Generated_Number], Generated_Number, a, MainMap.GetRoadSpeed(), MainCar.Get_YPos());
+			MainCar.Render("CarSprites");
 
+		}
+	}
+	
 	return true; // TEMP
 }
 
