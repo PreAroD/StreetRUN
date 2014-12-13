@@ -39,6 +39,11 @@ int RoadTrafic::Generate_Random_Number(int Low_Num,int High_Num)
 
 }
 
+void RoadTrafic::Get_Renderer()
+{
+	LocalRenderer = LoadTexture::Instance()->GetRenderer();
+}
+
 bool RoadTrafic::Push_Texture(std::string Path,std::string Index)
 {
 	return LoadTexture::Instance()->PushTexture(Path, Index);
@@ -78,8 +83,5 @@ SDL_Rect RoadTrafic::Render_Car(std::string Texture_Index,int Position,int Speed
 	return Car_Position_On_Road[Position];
 }
 
-void RoadTrafic::Get_Renderer()
-{
-	LocalRenderer = LoadTexture::Instance()->GetRenderer();
-}
+
 
