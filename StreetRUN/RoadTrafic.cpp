@@ -1,28 +1,32 @@
 #include "stdafx.h"
 #include "RoadTrafic.h"
 
-
+//Making this in string_texture_index, because i don't know hot to initilize the array in the constructur itself
 RoadTrafic::RoadTrafic()
 {
-	FirstCars = true;
-	Car_Position_On_Road[0] = { 50, -400, 150, 314 };
-	Car_Position_On_Road[1] = { 300, -400, 150, 314 };
-	Car_Position_On_Road[2] = { 550, -900, 150, 314 };
-	Car_Position_On_Road[3] = { 800, -2000, 150, 314 };
+	FirstCars[0] = true;
+	FirstCars[1] = true;
+	Loop = 0;
+	Car_Position_On_Road[0] = { 50, -400, 150, 300 };
+	Car_Position_On_Road[1] = { 300, -400, 150, 300 };
+	Car_Position_On_Road[2] = { 550, -900, 150, 300 };
+	Car_Position_On_Road[3] = { 800, -2000, 150, 300 };
 
-	Car_Position_On_Image[0] = { 0, 0, 150, 300 };
+	//Car position in PNG
+	Car_Position_On_Image[0] = { 0, 0, 144, 290 };
 	Car_Position_On_Image[1] = { 0, 0, 150, 338 };
 	Car_Position_On_Image[2] = { 0, 0, 150, 308 };
 	Car_Position_On_Image[3] = { 0, 0, 150, 300 };
 	Car_Position_On_Image[4] = { 0, 0, 150, 313 };
 	Car_Position_On_Image[5] = { 0, 0, 150, 309 };	
-	Car_Pos["Zero_Car"] = Car_Position_On_Image[0];
-	Car_Pos["First_Car"] = Car_Position_On_Image[1];
-	Car_Pos["Second_Car"] = Car_Position_On_Image[2];
-	Car_Pos["Third_Car"] = Car_Position_On_Image[3];
-	Car_Pos["Fourth_Car"] = Car_Position_On_Image[4];
-	Car_Pos["Fifth_Car"] = Car_Position_On_Image[5];
 
+	//Initialize the array this way, because VS13 not supporting C++11 fully -_-
+	String_Texture_Index[0] = "Zero_Car";
+	String_Texture_Index[1] = "First_Car";
+	String_Texture_Index[2] = "Second_Car";
+	String_Texture_Index[3] = "Third_Car";
+	String_Texture_Index[4] = "Fourth_Car";
+	String_Texture_Index[5] = "Fifth_Car";
 }
 
 RoadTrafic::~RoadTrafic()
@@ -56,31 +60,49 @@ SDL_Texture* RoadTrafic::Get_Texture(std::string Texture_Index)
 }
 
 
-SDL_Rect RoadTrafic::Render_Car(std::string Texture_Index,int Position,int Speed,int Show_Interval,int MainCar_Position)
+SDL_Rect RoadTrafic::Render_Car(SDL_Texture* LocalCarType,int Car_Index,int Position_On_Road,int Speed,int MainCar_Position)
 {
 	Get_Renderer();
 	//? To fix the speed
-	if (FirstCars == true)
+	if (FirstCars[0] == true)
 	{
 		for (int Temp = 0; Temp < 4; Temp++)
 		{
 			CarSpeed[Temp] = Generate_Random_Number(1, 20);
 		}
-		FirstCars = false;
+		FirstCars[0] = false;
+	}
+	//? To fix the car type spawn
+	if (FirstCars[1] == true)
+	{
+		 
+		Get_CarType[Loop] = LocalCarType;
+		if (Loop == 3)
+		{
+			Loop = 0;
+			FirstCars[1] = false;
+		}
 	}
 	
-	if (Car_Position_On_Road[Position].y >= 1024)
+	if (Car_Position_On_Road[Position_On_Road].y >= 1024)
 	{
-		Car_Position_On_Road[Position].y = -Generate_Random_Number(400,1500);
-		CarSpeed[Position] = Generate_Random_Number(1, 20);
+		Car_Position_On_Road[Position_On_Road].y = -Generate_Random_Number(400, 1500);
+		CarSpeed[Position_On_Road] = Generate_Random_Number(1, 20);
+		Get_CarType[Position_On_Road] = LocalCarType;
 	}
 
-	Car_Position_On_Road[Position].y += CarSpeed[Position];
-
-	if (Position <= 3)
-			if (SDL_RenderCopy(LocalRenderer, Get_Texture(Texture_Index), &Car_Pos[Texture_Index], &Car_Position_On_Road[Position]) == -1)
+	Car_Position_On_Road[Position_On_Road].y += CarSpeed[Position_On_Road];
+	
+	SDL_QueryTexture(Get_CarType[Position_On_Road], NULL, NULL, &CarWidth, &CarHeight);
+	Car_Position_On_Road[Position_On_Road].h = CarHeight;
+	Car_Position_On_Image[Car_Index].h = CarHeight;
+	Car_Position_On_Road[Position_On_Road].w = CarWidth;
+	Car_Position_On_Image[Car_Index].w = CarWidth;
+	if (Position_On_Road <= 3)
+		if (SDL_RenderCopy(LocalRenderer, Get_CarType[Position_On_Road], &Car_Position_On_Image[Car_Index], &Car_Position_On_Road[Position_On_Road]) == -1)
 				cerr << "Some shit happened\n" << SDL_GetError() << endl;
-	return Car_Position_On_Road[Position];
+	Loop++;
+	return Car_Position_On_Road[Position_On_Road];
 }
 
 

@@ -58,7 +58,9 @@ bool Game::InitSDL()
 bool Game::InitTextures()
 {
 	//Check for errors, if no Errors return true, if there is an error return false!
+	
 	bool Check_For_Errors[8];
+	//Push the cars
 	Check_For_Errors[0] = MainCar.Push_Texture("Img/CarSprites.png", "CarSprites");
 	Check_For_Errors[1] = MainMap.Push_Texture("Img/road.png", "Map");
 	Check_For_Errors[2] = MainTrafic.Push_Texture("Img/0.png", "Zero_Car");
@@ -67,6 +69,14 @@ bool Game::InitTextures()
 	Check_For_Errors[5] = MainTrafic.Push_Texture("Img/3.png", "Third_Car");
 	Check_For_Errors[6] = MainTrafic.Push_Texture("Img/4.png", "Fourth_Car");
 	Check_For_Errors[7] = MainTrafic.Push_Texture("Img/5.png", "Fifth_Car");
+	//Get the cars
+	CarType[0] = MainTrafic.Get_Texture("Zero_Car");
+	CarType[1] = MainTrafic.Get_Texture("First_Car");
+	CarType[2] = MainTrafic.Get_Texture("Second_Car");
+	CarType[3] = MainTrafic.Get_Texture("Third_Car");
+	CarType[4] = MainTrafic.Get_Texture("Fourth_Car");
+	CarType[5] = MainTrafic.Get_Texture("Fifth_Car");
+
 	for (int Check = 0; Check < 8; Check++)
 	{
 		if (Check_For_Errors[Check] == false)
@@ -132,7 +142,9 @@ bool Game::Render()
 	MainText.Render_Text("FPS", 0, 0);
 	for (int a = 0; a <= 3; a++)
 	{
-		Temp[a] = Trafic[a]->Render_Car("Zero_Car", a, MainMap.GetRoadSpeed(), 0,MainCar.Get_YPos());
+		//Temp[a] for collision
+		int Generated_Number = MainTrafic.Generate_Random_Number(0, 5);
+		Temp[a] = Trafic[a]->Render_Car(CarType[Generated_Number],Generated_Number, a, MainMap.GetRoadSpeed(),MainCar.Get_YPos());
 		MainCar.Render("CarSprites");
 		
 	}

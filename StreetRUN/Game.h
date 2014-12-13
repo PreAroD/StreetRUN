@@ -18,6 +18,7 @@ private:
 	RoadTrafic MainTrafic,*Trafic[4];
 	Timer MainTime;
 	SDL_Rect Temp[4];
+	SDL_Texture* CarType[6];
 	//Start SDL init
 	std::string Local_WindowName;
 	Uint32 Local_WindowFlag;
