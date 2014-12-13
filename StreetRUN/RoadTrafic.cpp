@@ -4,7 +4,7 @@
 
 RoadTrafic::RoadTrafic()
 {
-
+	FirstCars = true;
 	Car_Position_On_Road[0] = { 50, -400, 150, 314 };
 	Car_Position_On_Road[1] = { 300, -400, 150, 314 };
 	Car_Position_On_Road[2] = { 550, -900, 150, 314 };
@@ -54,26 +54,23 @@ SDL_Texture* RoadTrafic::Get_Texture(std::string Texture_Index)
 SDL_Rect RoadTrafic::Render_Car(std::string Texture_Index,int Position,int Speed,int Show_Interval,int MainCar_Position)
 {
 	Get_Renderer();
-	//Make just one line car with every car as an object
+	//! To fix the speed
+	if (FirstCars == true)
+	{
+		for (int Temp = 0; Temp < 4; Temp++)
+		{
+			CarSpeed[Temp] = Generate_Random_Number(1, 20);
+		}
+		FirstCars = false;
+	}
+	
 	if (Car_Position_On_Road[Position].y >= 1024)
 	{
 		Car_Position_On_Road[Position].y = -Generate_Random_Number(400,1500);
+		CarSpeed[Position] = Generate_Random_Number(1, 20);
 	}
-	//else
-	//{
-		//if (MainCar_Position <= Car_Position_On_Road[Position].y + 300)
-		//{
-			//Car_Position_On_Road[Position].y -= Generate_Random_Number(10, 20);
-		//}
-		//else
-		//{
-	//TODO: fix this!!!!!!!!
-	int test = Generate_Random_Number(1, 14);
-	cout << "test = " << test << endl;
-	Car_Position_On_Road[Position].y += test;
-		//}
-	//}
 
+	Car_Position_On_Road[Position].y += CarSpeed[Position];
 
 	if (Position <= 3)
 			if (SDL_RenderCopy(LocalRenderer, Get_Texture(Texture_Index), &Car_Pos[Texture_Index], &Car_Position_On_Road[Position]) == -1)
@@ -85,10 +82,4 @@ void RoadTrafic::Get_Renderer()
 {
 	LocalRenderer = LoadTexture::Instance()->GetRenderer();
 }
-/*
-SDL_Rect RoadTrafic::Get_Car_Pos()
-{
-	return Car_Position_On_Road;
-}
-*/
 

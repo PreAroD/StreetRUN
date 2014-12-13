@@ -12,6 +12,8 @@ private:
 	SDL_Rect Car_Position_On_Image[6];
 	map<std::string, SDL_Rect> Car_Pos;
 	SDL_Renderer* LocalRenderer;
+	bool FirstCars;
+	int CarSpeed[4];
 public:
 	RoadTrafic();
 	~RoadTrafic();
@@ -20,6 +22,5 @@ public:
 	SDL_Texture* Get_Texture(std::string);
 	void Get_Renderer();
 	SDL_Rect Render_Car(std::string,int,int,int,int);
-	SDL_Rect Get_Car_Pos();
 };
 
